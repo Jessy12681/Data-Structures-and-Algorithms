@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+struct Course {
+    string course_code;
+    string course_name;
+};
+
+struct Grade {
+    int mark;
+    char the_grade;
+};
+
+struct Student {
+    char reg_no[21];
+    char name[51];
+    int age;
+    Course course;
+    Grade grade;
+    bool grade_locked = false;
+};
+
+Student students[40];
+int student_count = 0;
+
+char calculateGrade(int mark) {
+    if (mark > 69) return 'A';
+    else if (mark > 59) return 'B';
+    else if (mark > 49) return 'C';
+    else if (mark > 39) return 'D';
+    else return 'E';
+}
+
+void addStudent() {
+    if (student_count >= 40) {
+        cout << "Max students reached.\n";
+        return;
+    }
+    Student& s = students[student_count++];
+    cout << "Enter reg no: ";
+    cin >> s.reg_no;
+    cout << "Enter name: ";
+    cin.ignore();
+    cin.getline(s.name, 50);
+    cout << "Enter age: ";
+    cin >> s.age;
+    cout << "Enter course code: ";
+    cin >> s.course.course_code;
+    cout << "Enter course name: ";
+    cin.ignore();
+    getline(cin, s.course.course_name);
+    s.grade_locked = false;
+}
+
+void editStudent(int index) {
+    if (index >= student_count) {
+        cout << "Invalid index.\n";
+        return;
+    }
+    Student& s = students[index];
+    cout << "Editing student " << s.name << endl;
+    cout << "Enter new name: ";
+    cin.ignore();
+    cin.getline(s.name, 50);
+    cout << "Enter new age: ";
+    cin >> s.age;
+    cout << "Enter new course code: ";
+    cin >> s.course.course_code;
+    cout << "Enter new course name: ";
+    cin.ignore();
+    getline(cin, s.course.course_name);
+}
+
+void addMarks(int index) {
+    if (index >= student_count) {
+        cout << "Invalid index.\n";
+        return;
+    }
+    Student& s = students[index];
+    if (s.grade_locked) {
+        cout << "Grade already assigned and cannot be changed.\n";
+        return;
+    }
+    cout << "Enter mark for " << s.name << ": ";
+    cin >> s.grade.mark;
+    s.grade.the_grade = calculateGrade(s.grade.mark);
+    s.grade_locked = true;
+    cout << "Grade: " << s.grade.the_grade << endl;
+}
