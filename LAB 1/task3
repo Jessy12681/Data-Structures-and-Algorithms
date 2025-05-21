@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+
+class Course {
+public:
+    string code;
+    string name;
+};
+
+class Grade {
+public:
+    int mark;
+    char the_grade;
+
+    void assignGrade(int m) {
+        mark = m;
+        if (mark > 69) the_grade = 'A';
+        else if (mark > 59) the_grade = 'B';
+        else if (mark > 49) the_grade = 'C';
+        else if (mark > 39) the_grade = 'D';
+        else the_grade = 'E';
+    }
+};
+
+class Student {
+private:
+    bool grade_locked = false;
+public:
+    string reg_no;
+    string name;
+    int age;
+    Course course;
+    Grade grade;
+
+    void inputStudent() {
+        cout << "Enter reg no: ";
+        cin >> reg_no;
+        cout << "Enter name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter age: ";
+        cin >> age;
+        cout << "Enter course code: ";
+        cin >> course.code;
+        cout << "Enter course name: ";
+        cin.ignore();
+        getline(cin, course.name);
+    }
+
+    void editStudent() {
+        cout << "Editing student: " << name << endl;
+        cout << "Enter new name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter new age: ";
+        cin >> age;
+        cout << "Enter new course code: ";
+        cin >> course.code;
+        cout << "Enter new course name: ";
+        cin.ignore();
+        getline(cin, course.name);
+    }
+
+    void assignMarks() {
+        if (grade_locked) {
+            cout << "Grade already assigned.\n";
+            return;
+        }
+        int mark;
+        cout << "Enter mark: ";
+        cin >> mark;
+        grade.assignGrade(mark);
+        grade_locked = true;
+        cout << "Assigned Grade: " << grade.the_grade << endl;
+    }
+};
